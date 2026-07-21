@@ -26,6 +26,18 @@
   "bin": {
     "fp": "bin/fp.js"
   },
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./probe": "./lib/probe.js",
+    "./match": "./lib/match.js",
+    "./db": "./lib/db.js",
+    "./jsd": "./lib/jsd.js",
+    "./tasks": "./lib/tasks.js",
+    "./verdict": "./lib/verdict.js",
+    "./providers/*": "./lib/providers/*.js",
+    "./package.json": "./package.json"
+  },
   "files": [
     "bin/",
     "lib/",
@@ -40,7 +52,7 @@
   ],
   "scripts": {
     "bootstrap": "node bin/fp.js bootstrap results/distributions.json",
-    "postinstall": "node -e \"try{require('fs').accessSync('results/distributions.json')}catch(e){process.exit(0)}\" && node bin/fp.js bootstrap results/distributions.json 2>/dev/null || true",
+    "postinstall": "node bin/fp.js bootstrap results/distributions.json 2>&1 || echo '[llm-fingerprint] postinstall bootstrap skipped — will auto-bootstrap on first fp command'",
     "test": "node --test test/*.test.js"
   },
   "engines": {

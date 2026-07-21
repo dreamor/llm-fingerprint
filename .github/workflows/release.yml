@@ -48,7 +48,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          registry-url: https://registry.npmjs.org
 
       - name: Check if version tag already exists
         id: check
@@ -73,16 +72,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           TAG="${{ steps.check.outputs.tag }}"
-          VER="${{ steps.check.outputs.version }}"
-
-          # Generate release notes from commit log since last tag
           PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
           if [ -n "$PREV_TAG" ]; then
             NOTES=$(git log "$PREV_TAG..HEAD" --oneline --no-decorate 2>/dev/null || echo "")
           else
             NOTES="Initial release (commits: $(git rev-list --count HEAD))"
           fi
-
           gh release create "$TAG" \
             --title "$TAG" \
             --notes "$NOTES" \
@@ -90,4 +85,7 @@ jobs:
 
       - name: Publish to npm
         if: steps.check.outputs.exists == 'false'
-        run: npm publish --provenance --access public
+        # Use OIDC Trusted Publisher — no token needed
+        run: npm publish --provenance --access public --registry=https://registry.npmjs.org
+        env:
+          NODE_AUTH_TOKEN: ""

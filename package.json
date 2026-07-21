@@ -40,7 +40,8 @@
   ],
   "scripts": {
     "bootstrap": "node bin/fp.js bootstrap results/distributions.json",
-    "postinstall": "node -e \"try{require('fs').accessSync('results/distributions.json')}catch(e){process.exit(0)}\" && node bin/fp.js bootstrap results/distributions.json 2>/dev/null || true"
+    "postinstall": "node -e \"try{require('fs').accessSync('results/distributions.json')}catch(e){process.exit(0)}\" && node bin/fp.js bootstrap results/distributions.json 2>/dev/null || true",
+    "test": "node --test test/*.test.js"
   },
   "engines": {
     "node": ">=18"

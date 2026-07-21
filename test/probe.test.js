@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { resolveReps } from '../lib/probe.js';
+import { resolveReps, anthropicMessagesUrl } from '../lib/probe.js';
 
 describe('resolveReps()', () => {
   it('auto with default EER 0.10 returns 16', () => {
@@ -32,5 +32,39 @@ describe('resolveReps()', () => {
     assert.equal(resolveReps('abc'), 30);
     assert.equal(resolveReps(''), 30);
     assert.equal(resolveReps('-5'), 30);
+  });
+});
+
+describe('anthropicMessagesUrl()', () => {
+  it('adds /v1/messages to a bare host', () => {
+    assert.equal(
+      anthropicMessagesUrl('https://api.anthropic.com'),
+      'https://api.anthropic.com/v1/messages',
+    );
+  });
+
+  it('adds only /messages when /v1 is already present', () => {
+    assert.equal(
+      anthropicMessagesUrl('https://api.anthropic.com/v1'),
+      'https://api.anthropic.com/v1/messages',
+    );
+  });
+
+  it('handles trailing slashes', () => {
+    assert.equal(
+      anthropicMessagesUrl('https://api.anthropic.com/'),
+      'https://api.anthropic.com/v1/messages',
+    );
+    assert.equal(
+      anthropicMessagesUrl('https://api.anthropic.com/v1/'),
+      'https://api.anthropic.com/v1/messages',
+    );
+  });
+
+  it('respects an explicit non-v1 version prefix', () => {
+    assert.equal(
+      anthropicMessagesUrl('https://proxy.example.com/v2'),
+      'https://proxy.example.com/v2/messages',
+    );
   });
 });

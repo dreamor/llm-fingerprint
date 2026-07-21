@@ -73,4 +73,29 @@ describe('normalize()', () => {
     assert.equal(normalize("i don't have"), null);
     assert.equal(normalize('as an ai'), null);
   });
+
+  it('detects Chinese refusal prefixes', () => {
+    assert.equal(normalize('我无法回答这个问题'), null);
+    assert.equal(normalize('抱歉，我不能'), null);
+    assert.equal(normalize('对不起'), null);
+    assert.equal(normalize('作为一个AI'), null);
+  });
+
+  it('detects Russian refusal prefixes', () => {
+    assert.equal(normalize('Извините, я не могу'), null);
+    assert.equal(normalize('К сожалению, это невозможно'), null);
+    assert.equal(normalize('Как ИИ, я не могу'), null);
+  });
+
+  it('detects Arabic refusal prefixes', () => {
+    assert.equal(normalize('عذراً، لا أستطيع'), null);
+    assert.equal(normalize('لا يمكنني ذلك'), null);
+    assert.equal(normalize('آسف'), null);
+  });
+
+  it('preserves valid CJK/Arabic answers (no false-positive refusal detection)', () => {
+    assert.equal(normalize('蓝色'), '蓝色');
+    assert.equal(normalize('красный'), 'красный');
+    assert.equal(normalize('أزرق'), 'أزرق');
+  });
 });

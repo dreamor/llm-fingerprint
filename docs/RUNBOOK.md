@@ -10,10 +10,10 @@
 cd /path/to/llm-fingerprint
 
 # Step 1: Bootstrap (one-time)
-node bin/fp.js bootstrap results/distributions.json
+fp bootstrap results/distributions.json
 
 # Step 2: Probe
-node bin/fp.js probe https://api.openai.com/v1 $OPENAI_KEY gpt-4o --reps 16 --langs en
+fp probe https://api.openai.com/v1 $OPENAI_KEY gpt-4o --reps 16 --langs en
 ```
 
 The verdict tells you:
@@ -26,7 +26,7 @@ The verdict tells you:
 ### Compliance audit
 
 ```bash
-node bin/fp.js verify https://api.openai.com/v1 $KEY gpt-4o --reps 16
+fp verify https://api.openai.com/v1 $KEY gpt-4o --reps 16
 ```
 
 Expected output:
@@ -47,7 +47,7 @@ num10-random,en,3
 ```
 
 ```bash
-node bin/fp.js fingerprint /tmp/answers.csv
+fp fingerprint /tmp/answers.csv
 ```
 
 ## Reference library management
@@ -55,14 +55,14 @@ node bin/fp.js fingerprint /tmp/answers.csv
 ### Bootstrap from paper data
 
 ```bash
-node bin/fp.js bootstrap results/distributions.json
+fp bootstrap results/distributions.json
 # → bootstrapped 176 models (10540 cells) → data/reference.json
 ```
 
 ### Import new data (JSONL format)
 
 ```bash
-node bin/fp.js import ./responses.jsonl --model "anthropic/claude-sonnet-5"
+fp import ./responses.jsonl --model "anthropic/claude-sonnet-5"
 ```
 
 The JSONL format must follow the paper's schema:
@@ -85,11 +85,11 @@ The JSONL format must follow the paper's schema:
 
 ```bash
 # If reference is loaded...
-node bin/fp.js list
+fp list
 # Should show "Reference library: 176 models" and family breakdown
 
 # If reference is empty...
-echo "Run: node bin/fp.js bootstrap results/distributions.json"
+echo "Run: fp bootstrap results/distributions.json"
 ```
 
 ## Files

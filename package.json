@@ -1,14 +1,53 @@
 {
   "name": "llm-fingerprint",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "type": "module",
-  "description": "Identify LLMs by behavioral fingerprint — powered by the PAMELA research dataset",
+  "description": "Identify LLMs by behavioral fingerprint — send simple questions, match answer distributions against 176+ models using Jensen-Shannon Divergence (AUC 0.97)",
+  "keywords": [
+    "llm",
+    "fingerprint",
+    "model-identification",
+    "jsd",
+    "ai-security",
+    "model-audit",
+    "openrouter"
+  ],
+  "license": "MIT",
+  "author": "dreamor",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dreamor/llm-fingerprint.git"
+  },
+  "homepage": "https://github.com/dreamor/llm-fingerprint#readme",
+  "bugs": {
+    "url": "https://github.com/dreamor/llm-fingerprint/issues"
+  },
   "bin": {
     "fp": "./bin/fp.js"
   },
+  "files": [
+    "bin/",
+    "lib/",
+    "results/distributions.json",
+    "results/classification.json",
+    "results/clustering.json",
+    "results/verification.json",
+    "results/pilot-report.md",
+    "data/README.md",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
-    "bootstrap": "node scripts/bootstrap.js"
+    "bootstrap": "node bin/fp.js bootstrap results/distributions.json",
+    "postinstall": "node -e \"try{require('fs').accessSync('results/distributions.json')}catch(e){process.exit(0)}\" && node bin/fp.js bootstrap results/distributions.json 2>/dev/null || true"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "dependencies": {}
 }

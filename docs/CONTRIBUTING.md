@@ -7,20 +7,27 @@
 ```bash
 git clone https://github.com/dreamor/llm-fingerprint.git
 cd llm-fingerprint
-# No npm install needed — zero dependencies, uses Node.js built-in fetch
+
+# Option A: install globally for the `fp` command
+npm install -g .
+
+# Option B: run directly from source (no install needed)
+node bin/fp.js --help
 ```
+
+Zero npm dependencies — uses Node.js built-in `fetch`.
 
 ## Available scripts
 
-| Command | Description |
-|---------|-------------|
-| `node bin/fp.js bootstrap <path>` | Initialize reference library from `distributions.json` |
-| `node bin/fp.js probe <url> <key> <model>` | Probe an unknown model API |
-| `node bin/fp.js verify <url> <key> <model>` | Verify a claimed model identity |
-| `node bin/fp.js fingerprint <csv>` | Match from manually collected answers |
-| `node bin/fp.js match <result.json>` | Match an existing probe result |
-| `node bin/fp.js list [--family]` | Browse reference library |
-| `node bin/fp.js import <jsonl> --model` | Ingest new fingerprints |
+| Command (global) | Command (local) | Description |
+|------------------|-----------------|-------------|
+| `fp bootstrap <path>` | `node bin/fp.js bootstrap <path>` | Initialize reference library from `distributions.json` |
+| `fp probe <url> <key> <model>` | `node bin/fp.js probe ...` | Probe an unknown model API |
+| `fp verify <url> <key> <model>` | `node bin/fp.js verify ...` | Verify a claimed model identity |
+| `fp fingerprint <csv>` | `node bin/fp.js fingerprint <csv>` | Match from manually collected answers |
+| `fp match <result.json>` | `node bin/fp.js match <result.json>` | Match an existing probe result |
+| `fp list [--family]` | `node bin/fp.js list [--family]` | Browse reference library |
+| `fp import <jsonl> --model` | `node bin/fp.js import <jsonl> --model` | Ingest new fingerprints |
 
 ## Project structure
 

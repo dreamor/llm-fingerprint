@@ -2,7 +2,8 @@
 
 > Identify unknown language models by their behavioral fingerprint.
 
-Powered by the [PAMELA research dataset](https://github.com/pamela-publish-data) — 176+ models probed across 15 tasks × 4 languages × 30 repetitions.
+Powered by the PAMELA research dataset — 176+ models probed across 15 tasks × 4 languages × 30 repetitions.  
+Source: [github.com/dreamor/llm-fingerprint](https://github.com/dreamor/llm-fingerprint)
 
 ## How it works
 

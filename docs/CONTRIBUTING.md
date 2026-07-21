@@ -48,23 +48,34 @@ results/                   # Analysis outputs (pilot-report, distributions, clus
 
 ## Testing
 
-No test suite yet. To verify changes:
-
 ```bash
-# Bootstrap from the paper's distributions
-node bin/fp.js bootstrap results/distributions.json
+# Run all tests (zero-config, uses node:test)
+npm test
 
-# Run a self-test: extract gpt-4o fingerprint and match
-node -e "
-const ref = JSON.parse(require('fs').readFileSync('data/reference.json'));
-const gpt4o = ref.distributions.filter(r => r.model === 'openai/gpt-4o' && r.temperature === 1);
-const probeResult = { model: 'test', provider: 'test', temperature: 1, reps: 30, cells: gpt4o.slice(0, 10) };
-const { match } = require('./lib/match.js');
-const { FingerprintDB } = require('./lib/db.js');
-const db = new FingerprintDB(); db.load();
-console.log(match(db, probeResult).verdict.label);  // should show 'matches openai/gpt-4o'
-"
+# Run a single test file
+node --test test/jsd.test.js
+node --test test/match.test.js
+
+# Run with watch mode (Node.js 22+)
+node --test --watch test/*.test.js
 ```
+
+Tests use Node.js built-in `node:test` and `node:assert` — no test framework to install.
+
+### Test coverage
+
+| File | What it tests | Tests |
+|------|---------------|-------|
+| `test/jsd.test.js` | JSD correctness, symmetry, edge cases | 7 |
+| `test/tasks.test.js` | Task definitions, languages, normalize() | 14 |
+| `test/db.test.js` | DB load, CRUD, families, entries | 10 |
+| `test/match.test.js` | Self-identification, empty probe, families | 5 |
+| `test/probe.test.js` | resolveReps budget curve, fallback | 5 |
+
+### CI pipeline
+
+Every push to `main` runs tests on Node 18/20/22.
+Every GitHub Release runs tests first, then publishes to npm via Trusted Publisher.
 
 ## Code style
 

@@ -89,6 +89,12 @@ The fingerprint library comes from the **PAMELA** study: 176+ models across 19 f
 - **JSD gap between vs within families: 0.07 (p=0.0008)** — related models share behavioral traits
 - Some models are routinely confused (e.g. Qwen → Gemini), revealing potential training overlap
 
+### Citation
+
+If you use this dataset or tool in academic work, please cite:
+
+> Bruckner, T. (2026). Single-token output distributions as behavioral fingerprints of large language models [Data set]. Zenodo. https://doi.org/10.5281/zenodo.21278557
+
 ## License
 
 Research data: CC-BY.

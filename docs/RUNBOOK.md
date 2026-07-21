@@ -2,6 +2,21 @@
 
 # Runbook
 
+## Install
+
+```bash
+npm install -g llm-fingerprint
+fp bootstrap   # auto-runs on install
+```
+
+Or from source:
+
+```bash
+git clone https://github.com/dreamor/llm-fingerprint.git
+cd llm-fingerprint
+node bin/fp.js bootstrap results/distributions.json
+```
+
 ## Typical workflows
 
 ### Probe an unknown API

@@ -12,6 +12,7 @@ permissions:
 jobs:
   test-and-publish:
     runs-on: ubuntu-latest
+    environment: release
     steps:
       - uses: actions/checkout@v4
 
@@ -19,8 +20,6 @@ jobs:
         with:
           node-version: 22
           registry-url: 'https://registry.npmjs.org'
-          # setup-node generates .npmrc with _authToken that shadows OIDC.
-          # We'll clean it up before publish.
 
       - name: Verify tag matches package version
         run: |

@@ -1,6 +1,6 @@
 {
   "name": "llm-fingerprint",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
   "type": "module",
   "description": "Identify LLMs by behavioral fingerprint — send simple questions, match answer distributions against 176+ models using Jensen-Shannon Divergence (AUC 0.97)",

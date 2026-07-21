@@ -44,6 +44,4 @@ jobs:
         run: node scripts/self-test.mjs
 
       - name: Publish to npm (OIDC trusted publisher)
-        run: |
-          rm -f "$HOME/.npmrc" "$NPM_CONFIG_USERCONFIG"
-          npm publish --access public
+        run: npm publish --access public

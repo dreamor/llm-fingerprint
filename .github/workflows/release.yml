@@ -23,7 +23,7 @@ jobs:
       - name: Verify tag matches package version
         run: |
           TAG_VERSION="${GITHUB_REF_NAME#v}"
-          PKG_VERSION=$(node -e "console.log(require('./package.json').version)")
+          PKG_VERSION=$(node --input-type=module -e "console.log(require('./package.json').version)")
           echo "Git tag version: $TAG_VERSION"
           echo "package.json version: $PKG_VERSION"
           if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
@@ -40,7 +40,7 @@ jobs:
 
       - name: Functional check — self-test match
         run: |
-          node --input-type=module -e "
+          node --input-type=module << 'SCRIPT'
             import { readFileSync } from 'fs';
             import { FingerprintDB } from './lib/db.js';
             import { match } from './lib/match.js';
@@ -51,7 +51,7 @@ jobs:
             const r = match(db, probeResult);
             if (r.candidates[0].model !== 'openai/gpt-4o') process.exit(1);
             console.log('[self-test] OK — top match: ' + r.candidates[0].model);
-          "
+SCRIPT
 
       - name: Publish to npm (OIDC trusted publisher)
         run: npm publish --access public

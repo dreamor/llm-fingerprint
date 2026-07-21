@@ -35,7 +35,7 @@ jobs:
 
       - name: Quick functional check — self-test match
         run: |
-          node --input-type=module -e "
+          node --input-type=module << 'SCRIPT'
             import { readFileSync } from 'fs';
             import { FingerprintDB } from './lib/db.js';
             import { match } from './lib/match.js';
@@ -46,4 +46,4 @@ jobs:
             const r = match(db, probeResult);
             if (r.candidates[0].model !== 'openai/gpt-4o') process.exit(1);
             console.log('[self-test] OK — top match: ' + r.candidates[0].model);
-          "
+SCRIPT

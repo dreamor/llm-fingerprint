@@ -1,22 +1,36 @@
 name: Release
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - 'v*'
 
 permissions:
+  id-token: write
   contents: read
-  id-token: write  # required for Trusted Publisher (npm provenance)
 
 jobs:
-  test:
+  test-and-publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Verify tag matches package version
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          PKG_VERSION=$(node -e "console.log(require('./package.json').version)")
+          echo "Git tag version: $TAG_VERSION"
+          echo "package.json version: $PKG_VERSION"
+          if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+            echo "❌ Git tag ($TAG_VERSION) != package.json ($PKG_VERSION)"
+            exit 1
+          fi
+          echo "✅ 版本一致"
 
       - name: Bootstrap reference library
         run: node bin/fp.js bootstrap results/distributions.json
@@ -25,31 +39,7 @@ jobs:
         run: node --test test/*.test.js
 
       - name: Functional check — self-test match
-        run: node -e "
-          import { readFileSync } from 'fs';
-          import { FingerprintDB } from './lib/db.js';
-          import { match } from './lib/match.js';
-          const ref = JSON.parse(readFileSync('data/reference.json'));
-          const cells = ref.distributions.filter(r => r.model === 'openai/gpt-4o' && r.temperature === 1);
-          const probeResult = { model: 'selftest', provider: 'test', temperature: 1, reps: 30, cells: cells.slice(0, 10) };
-          const db = new FingerprintDB(); db.load();
-          const r = match(db, probeResult);
-          if (r.candidates[0].model !== 'openai/gpt-4o') process.exit(1);
-          console.log('[self-test] OK — top match: ' + r.candidates[0].model);
-        "
+        run: node scripts/self-test.mjs
 
-  publish:
-    needs: [test]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          registry-url: https://registry.npmjs.org
-
-      - name: Publish to npm
-        run: npm publish --provenance --access public
-        # No NPM_TOKEN needed — Trusted Publisher uses OIDC
-        # Set up via: npm token create --publish --oidc
+      - name: Publish to npm (OIDC trusted publisher)
+        run: npm publish --access public

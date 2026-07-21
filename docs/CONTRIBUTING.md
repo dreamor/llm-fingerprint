@@ -14,18 +14,18 @@ cd llm-fingerprint
 
 | Command | Description |
 |---------|-------------|
-| `node fingerprint/bin/fp.js bootstrap <path>` | Initialize reference library from `distributions.json` |
-| `node fingerprint/bin/fp.js probe <url> <key> <model>` | Probe an unknown model API |
-| `node fingerprint/bin/fp.js verify <url> <key> <model>` | Verify a claimed model identity |
-| `node fingerprint/bin/fp.js fingerprint <csv>` | Match from manually collected answers |
-| `node fingerprint/bin/fp.js match <result.json>` | Match an existing probe result |
-| `node fingerprint/bin/fp.js list [--family]` | Browse reference library |
-| `node fingerprint/bin/fp.js import <jsonl> --model` | Ingest new fingerprints |
+| `node bin/fp.js bootstrap <path>` | Initialize reference library from `distributions.json` |
+| `node bin/fp.js probe <url> <key> <model>` | Probe an unknown model API |
+| `node bin/fp.js verify <url> <key> <model>` | Verify a claimed model identity |
+| `node bin/fp.js fingerprint <csv>` | Match from manually collected answers |
+| `node bin/fp.js match <result.json>` | Match an existing probe result |
+| `node bin/fp.js list [--family]` | Browse reference library |
+| `node bin/fp.js import <jsonl> --model` | Ingest new fingerprints |
 
 ## Project structure
 
 ```
-fingerprint/               # CLI tool (self-contained, zero deps)
+.               # CLI tool (self-contained, zero deps)
 ├── bin/fp.js              # CLI entry point — 7 commands
 ├── lib/
 │   ├── jsd.js             # Jensen-Shannon Divergence
@@ -45,15 +45,15 @@ No test suite yet. To verify changes:
 
 ```bash
 # Bootstrap from the paper's distributions
-node fingerprint/bin/fp.js bootstrap results/distributions.json
+node bin/fp.js bootstrap results/distributions.json
 
 # Run a self-test: extract gpt-4o fingerprint and match
 node -e "
-const ref = JSON.parse(require('fs').readFileSync('fingerprint/data/reference.json'));
+const ref = JSON.parse(require('fs').readFileSync('data/reference.json'));
 const gpt4o = ref.distributions.filter(r => r.model === 'openai/gpt-4o' && r.temperature === 1);
 const probeResult = { model: 'test', provider: 'test', temperature: 1, reps: 30, cells: gpt4o.slice(0, 10) };
-const { match } = require('./fingerprint/lib/match.js');
-const { FingerprintDB } = require('./fingerprint/lib/db.js');
+const { match } = require('./lib/match.js');
+const { FingerprintDB } = require('./lib/db.js');
 const db = new FingerprintDB(); db.load();
 console.log(match(db, probeResult).verdict.label);  // should show 'matches openai/gpt-4o'
 "
@@ -79,7 +79,7 @@ Before submitting a PR:
 
 ## Adding a new probing task
 
-Open `fingerprint/lib/tasks.js` and add an entry to `PROMT_TPL`:
+Open `lib/tasks.js` and add an entry to `PROMT_TPL`:
 
 ```js
 'my-new-task': {

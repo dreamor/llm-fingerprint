@@ -12,9 +12,9 @@ data/runs/*/failures.jsonl
 data/derived/normalized.jsonl
 data/derived/normalization-report.json
 
-# Fingerprint tool run artifacts
-fingerprint/data/probe-*/
-fingerprint/data/verify-*/
+# Probe/verify run artifacts (regenerable)
+data/probe-*/
+data/verify-*/
 
 # OS
 .DS_Store

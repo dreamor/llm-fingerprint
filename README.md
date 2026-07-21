@@ -10,13 +10,13 @@
 
 ```bash
 # 1. Bootstrap the reference library
-node fingerprint/bin/fp.js bootstrap results/distributions.json
+node bin/fp.js bootstrap results/distributions.json
 
 # 2. Probe an unknown API
-node fingerprint/bin/fp.js probe https://api.openai.com/v1 $OPENAI_KEY gpt-4o --reps 16 --langs en
+node bin/fp.js probe https://api.openai.com/v1 $OPENAI_KEY gpt-4o --reps 16 --langs en
 
 # 3. Verify a claimed model (compliance audit)
-node fingerprint/bin/fp.js verify https://api.example.com $KEY gpt-4o --reps 16
+node bin/fp.js verify https://api.example.com $KEY gpt-4o --reps 16
 ```
 
 ## Features
@@ -56,23 +56,28 @@ API probing is cheap — ~$0.01 at GPT-4o-mini pricing for a full 15-task × 4-l
 
 ```
 llm-fingerprint/
-├── fingerprint/           # CLI tool (fp)
-│   ├── bin/fp.js          # Entry point
-│   ├── lib/               # Core modules
-│   │   ├── jsd.js         # JSD computation
-│   │   ├── tasks.js       # 15 probing tasks × 4 languages
-│   │   ├── db.js          # Reference library
-│   │   ├── match.js       # Matching algorithm
-│   │   └── probe.js       # API probe runner
-│   └── data/reference.json # Bootstrapped fingerprints (176 models)
-├── data/                  # PAMELA research dataset
+├── bin/fp.js              # Entry point
+├── lib/                   # Core modules
+│   ├── jsd.js             # JSD computation
+│   ├── tasks.js           # 15 probing tasks × 4 languages
+│   ├── db.js              # Reference library
+│   ├── match.js           # Matching algorithm
+│   └── probe.js           # API probe runner
+├── data/
+│   ├── reference.json     # Bootstrapped fingerprints (176 models)
 │   ├── runs/              # Experiment manifests
 │   └── derived/           # Normalized data
-└── results/               # Analysis outputs
-    ├── distributions.json # Reference fingerprints
-    ├── clustering.json    # UPGMA tree
-    ├── classification.json # 1-NN results (59.5% vs 18.4% chance)
-    └── verification.json  # AUC=0.97, EER=7.3%
+├── results/               # Analysis outputs
+│   ├── distributions.json # Reference fingerprints
+│   ├── clustering.json    # UPGMA tree
+│   ├── classification.json # 1-NN results (59.5% vs 18.4% chance)
+│   └── verification.json  # AUC=0.97, EER=7.3%
+├── docs/
+│   ├── CONTRIBUTING.md
+│   └── RUNBOOK.md
+├── package.json
+├── .gitignore
+└── README.md
 ```
 
 ## The research behind it

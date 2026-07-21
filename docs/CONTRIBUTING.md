@@ -84,6 +84,35 @@ Before submitting a PR:
 - [ ] Repo URL references use `github.com/dreamor/llm-fingerprint`
 - [ ] `data/README.md` and `results/README.md` reference the correct dataset DOI (if published)
 
+## Publishing to npm (Trusted Publisher)
+
+This package uses **npm Trusted Publisher** (OIDC-based, no token required).
+
+### One-time setup
+
+```bash
+# 1. Create the package on npm
+npm login
+npm publish --access public --dry-run   # verify first
+npm publish --access public              # first publish (run locally)
+
+# 2. Configure Trusted Publisher for CI
+npm token create --publish --oidc
+# → follow the link to set up the OIDC publisher on GitHub
+#   Environment:  leave blank (any branch)
+#   Owner:        dreamor
+#   Repository:   llm-fingerprint
+#   Workflow:     release.yml
+```
+
+After setup, every GitHub Release automatically publishes:
+
+```bash
+# GitHub → Releases → "Draft a new release"
+# Tag: v0.2.0, target: main
+# → CI runs npm publish --provenance --access public
+```
+
 ## Adding a new probing task
 
 Open `lib/tasks.js` and add an entry to `PROMT_TPL`:

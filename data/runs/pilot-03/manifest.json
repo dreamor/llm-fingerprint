@@ -1,0 +1,53 @@
+{
+  "run_id": "pilot-03",
+  "type": "pilot",
+  "created_utc": "2026-07-04T21:25:25.893Z",
+  "prompts_version": "1.0.0",
+  "prompts_sha256": "32f4fc3ab5077438f362bb4d0c06d1ebbe2bb5d2e0809474045dcd60a6b592c1",
+  "run_config_sha256": "e31947677df594a9e080a3662dd65517f1079c7bc98b4063cae9338209e60c42",
+  "git_commit": "8db2d31daff5342f69f76401e6595974888a9df7",
+  "models": [
+    "nvidia/nemotron-3-ultra-550b-a55b",
+    "nvidia/nemotron-3-nano-30b-a3b",
+    "qwen/qwen3-235b-a22b-2507",
+    "qwen/qwen3-30b-a3b-instruct-2507",
+    "deepseek/deepseek-v4-pro",
+    "deepseek/deepseek-v4-flash",
+    "meta-llama/llama-3.3-70b-instruct",
+    "google/gemma-4-31b-it"
+  ],
+  "languages": [
+    "en",
+    "ru",
+    "zh",
+    "ar"
+  ],
+  "tasks": [
+    "num100-random",
+    "num10-random",
+    "num-favorite",
+    "letter-random",
+    "word-random",
+    "color-random",
+    "color-favorite",
+    "animal-random",
+    "city-random",
+    "coin-flip",
+    "coord-num10",
+    "coord-color",
+    "coord-city",
+    "anticoord-num10",
+    "secret-password"
+  ],
+  "temperature_plan": [
+    {
+      "t": 1,
+      "reps": 20
+    },
+    {
+      "t": 0,
+      "reps": 3
+    }
+  ],
+  "notes": ""
+}

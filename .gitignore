@@ -1,0 +1,24 @@
+# Large regenerable data files (paper: "regenerate with npm run stats:all")
+results/split-scores.json
+results/divergence.json
+results/divergence-matrix.csv
+results/figures/
+
+# Raw response data (append-only, regenerable)
+data/runs/*/responses.jsonl
+data/runs/*/failures.jsonl
+
+# Derived data (regenerable)
+data/derived/normalized.jsonl
+data/derived/normalization-report.json
+
+# Fingerprint tool run artifacts
+fingerprint/data/probe-*/
+fingerprint/data/verify-*/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/

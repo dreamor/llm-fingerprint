@@ -1,0 +1,53 @@
+{
+  "run_id": "pilot-02",
+  "type": "pilot",
+  "created_utc": "2026-07-04T21:04:32.743Z",
+  "prompts_version": "1.0.0",
+  "prompts_sha256": "32f4fc3ab5077438f362bb4d0c06d1ebbe2bb5d2e0809474045dcd60a6b592c1",
+  "run_config_sha256": "4559840757e858e22b2b7d31b10703829f250af38579d497f9986019b34a5f5b",
+  "git_commit": "bd685723d4a00fb6c8b5b8626edf9d6819682265",
+  "models": [
+    "nvidia/nemotron-3-ultra-550b-a55b",
+    "nvidia/nemotron-3-nano-30b-a3b",
+    "openai/gpt-oss-120b",
+    "openai/gpt-oss-20b",
+    "deepseek/deepseek-v4-pro",
+    "deepseek/deepseek-v4-flash",
+    "meta-llama/llama-3.3-70b-instruct",
+    "google/gemma-4-31b-it"
+  ],
+  "languages": [
+    "en",
+    "ru",
+    "zh",
+    "ar"
+  ],
+  "tasks": [
+    "num100-random",
+    "num10-random",
+    "num-favorite",
+    "letter-random",
+    "word-random",
+    "color-random",
+    "color-favorite",
+    "animal-random",
+    "city-random",
+    "coin-flip",
+    "coord-num10",
+    "coord-color",
+    "coord-city",
+    "anticoord-num10",
+    "secret-password"
+  ],
+  "temperature_plan": [
+    {
+      "t": 1,
+      "reps": 20
+    },
+    {
+      "t": 0,
+      "reps": 3
+    }
+  ],
+  "notes": "ABANDONED 2026-07-04 ~21:30 UTC after ~1015/11040 responses: paid endpoints of hybrid-reasoning models enable reasoning by default, burning the 12-token completion budget — 6 of 8 models returned empty content with finish_reason=length (recorded as done, so the run is poisoned for resume). Root cause fixed in run/lib.js (reasoning:{enabled:false}); mandatory-reasoning models excluded study-wide by PI decision; superseded by pilot-03 (gpt-oss pair replaced by qwen3 *-2507 instruct pair). Data kept for reference, excluded from analysis."
+}

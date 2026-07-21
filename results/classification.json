@@ -1,0 +1,509 @@
+{
+  "method": "leave-one-out 1-NN on mean JSD",
+  "n_models_usable": 163,
+  "accuracy": 0.595092,
+  "chance_level": 0.184049,
+  "per_family": [
+    {
+      "family": "claude",
+      "n": 12,
+      "precision": 0.538462,
+      "recall": 0.583333
+    },
+    {
+      "family": "command",
+      "n": 4,
+      "precision": null,
+      "recall": 0
+    },
+    {
+      "family": "deepseek",
+      "n": 8,
+      "precision": 0.461538,
+      "recall": 0.75
+    },
+    {
+      "family": "gemini",
+      "n": 11,
+      "precision": 0.428571,
+      "recall": 0.545455
+    },
+    {
+      "family": "glm",
+      "n": 12,
+      "precision": 1,
+      "recall": 0.833333
+    },
+    {
+      "family": "gpt",
+      "n": 21,
+      "precision": 0.703704,
+      "recall": 0.904762
+    },
+    {
+      "family": "granite",
+      "n": 2,
+      "precision": null,
+      "recall": 0
+    },
+    {
+      "family": "grok",
+      "n": 2,
+      "precision": 0,
+      "recall": 0
+    },
+    {
+      "family": "hunyuan",
+      "n": 2,
+      "precision": null,
+      "recall": 0
+    },
+    {
+      "family": "kimi",
+      "n": 4,
+      "precision": 0.8,
+      "recall": 1
+    },
+    {
+      "family": "llama",
+      "n": 12,
+      "precision": 0.875,
+      "recall": 0.583333
+    },
+    {
+      "family": "minimax",
+      "n": 2,
+      "precision": null,
+      "recall": 0
+    },
+    {
+      "family": "mistral",
+      "n": 16,
+      "precision": 0.866667,
+      "recall": 0.8125
+    },
+    {
+      "family": "nemotron",
+      "n": 3,
+      "precision": 0.333333,
+      "recall": 0.333333
+    },
+    {
+      "family": "nova",
+      "n": 5,
+      "precision": 1,
+      "recall": 0.2
+    },
+    {
+      "family": "other",
+      "n": 17,
+      "precision": 0.2,
+      "recall": 0.058824
+    },
+    {
+      "family": "qwen",
+      "n": 30,
+      "precision": 0.5,
+      "recall": 0.733333
+    }
+  ],
+  "misclassified": [
+    {
+      "model": "ai21/jamba-large-1.7",
+      "true_family": "other",
+      "predicted_family": "grok",
+      "nn_distance": 0.3658
+    },
+    {
+      "model": "amazon/nova-2-lite-v1",
+      "true_family": "nova",
+      "predicted_family": "qwen",
+      "nn_distance": 0.306
+    },
+    {
+      "model": "amazon/nova-lite-v1",
+      "true_family": "nova",
+      "predicted_family": "gpt",
+      "nn_distance": 0.3829
+    },
+    {
+      "model": "amazon/nova-premier-v1",
+      "true_family": "nova",
+      "predicted_family": "gpt",
+      "nn_distance": 0.3844
+    },
+    {
+      "model": "amazon/nova-pro-v1",
+      "true_family": "nova",
+      "predicted_family": "deepseek",
+      "nn_distance": 0.3907
+    },
+    {
+      "model": "anthropic/claude-3-haiku",
+      "true_family": "claude",
+      "predicted_family": "deepseek",
+      "nn_distance": 0.3827
+    },
+    {
+      "model": "anthropic/claude-haiku-4.5",
+      "true_family": "claude",
+      "predicted_family": "gemini",
+      "nn_distance": 0.3095
+    },
+    {
+      "model": "anthropic/claude-opus-4.5",
+      "true_family": "claude",
+      "predicted_family": "gpt",
+      "nn_distance": 0.3084
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.6",
+      "true_family": "claude",
+      "predicted_family": "gemini",
+      "nn_distance": 0.3666
+    },
+    {
+      "model": "anthropic/claude-sonnet-5",
+      "true_family": "claude",
+      "predicted_family": "gpt",
+      "nn_distance": 0.2899
+    },
+    {
+      "model": "bytedance-seed/seed-1.6",
+      "true_family": "other",
+      "predicted_family": "grok",
+      "nn_distance": 0.3266
+    },
+    {
+      "model": "bytedance-seed/seed-1.6-flash",
+      "true_family": "other",
+      "predicted_family": "qwen",
+      "nn_distance": 0.4218
+    },
+    {
+      "model": "bytedance-seed/seed-2.0-lite",
+      "true_family": "other",
+      "predicted_family": "claude",
+      "nn_distance": 0.3705
+    },
+    {
+      "model": "cohere/command-a",
+      "true_family": "command",
+      "predicted_family": "grok",
+      "nn_distance": 0.368
+    },
+    {
+      "model": "cohere/command-r-08-2024",
+      "true_family": "command",
+      "predicted_family": "claude",
+      "nn_distance": 0.474
+    },
+    {
+      "model": "cohere/command-r-plus-08-2024",
+      "true_family": "command",
+      "predicted_family": "other",
+      "nn_distance": 0.5417
+    },
+    {
+      "model": "cohere/command-r7b-12-2024",
+      "true_family": "command",
+      "predicted_family": "other",
+      "nn_distance": 0.5331
+    },
+    {
+      "model": "deepcogito/cogito-v2.1-671b",
+      "true_family": "other",
+      "predicted_family": "deepseek",
+      "nn_distance": 0.2675
+    },
+    {
+      "model": "deepseek/deepseek-v4-flash",
+      "true_family": "deepseek",
+      "predicted_family": "other",
+      "nn_distance": 0.3097
+    },
+    {
+      "model": "deepseek/deepseek-v4-pro",
+      "true_family": "deepseek",
+      "predicted_family": "gpt",
+      "nn_distance": 0.331
+    },
+    {
+      "model": "google/gemini-2.5-flash",
+      "true_family": "gemini",
+      "predicted_family": "deepseek",
+      "nn_distance": 0.3244
+    },
+    {
+      "model": "google/gemini-2.5-flash-lite",
+      "true_family": "gemini",
+      "predicted_family": "qwen",
+      "nn_distance": 0.3294
+    },
+    {
+      "model": "google/gemma-2-27b-it",
+      "true_family": "gemini",
+      "predicted_family": "qwen",
+      "nn_distance": 0.3559
+    },
+    {
+      "model": "google/gemma-3-12b-it",
+      "true_family": "gemini",
+      "predicted_family": "qwen",
+      "nn_distance": 0.2623
+    },
+    {
+      "model": "ibm-granite/granite-4.0-h-micro",
+      "true_family": "granite",
+      "predicted_family": "qwen",
+      "nn_distance": 0.4376
+    },
+    {
+      "model": "ibm-granite/granite-4.1-8b",
+      "true_family": "granite",
+      "predicted_family": "gpt",
+      "nn_distance": 0.3668
+    },
+    {
+      "model": "inception/mercury-2",
+      "true_family": "other",
+      "predicted_family": "qwen",
+      "nn_distance": 0.2914
+    },
+    {
+      "model": "inclusionai/ling-2.6-1t",
+      "true_family": "other",
+      "predicted_family": "qwen",
+      "nn_distance": 0.2542
+    },
+    {
+      "model": "inclusionai/ling-2.6-flash",
+      "true_family": "other",
+      "predicted_family": "claude",
+      "nn_distance": 0.3456
+    },
+    {
+      "model": "liquid/lfm-2-24b-a2b",
+      "true_family": "other",
+      "predicted_family": "qwen",
+      "nn_distance": 0.2757
+    },
+    {
+      "model": "meta-llama/llama-3-8b-instruct",
+      "true_family": "llama",
+      "predicted_family": "gemini",
+      "nn_distance": 0.5924
+    },
+    {
+      "model": "meta-llama/llama-3.2-1b-instruct",
+      "true_family": "llama",
+      "predicted_family": "mistral",
+      "nn_distance": 0.621
+    },
+    {
+      "model": "microsoft/wizardlm-2-8x22b",
+      "true_family": "other",
+      "predicted_family": "deepseek",
+      "nn_distance": 0.418
+    },
+    {
+      "model": "minimax/minimax-01",
+      "true_family": "minimax",
+      "predicted_family": "nemotron",
+      "nn_distance": 0.2982
+    },
+    {
+      "model": "minimax/minimax-m3",
+      "true_family": "minimax",
+      "predicted_family": "qwen",
+      "nn_distance": 0.2795
+    },
+    {
+      "model": "mistralai/mistral-medium-3-5",
+      "true_family": "mistral",
+      "predicted_family": "qwen",
+      "nn_distance": 0.2449
+    },
+    {
+      "model": "mistralai/mistral-small-3.2-24b-instruct",
+      "true_family": "mistral",
+      "predicted_family": "gpt",
+      "nn_distance": 0.3175
+    },
+    {
+      "model": "mistralai/voxtral-small-24b-2507",
+      "true_family": "mistral",
+      "predicted_family": "grok",
+      "nn_distance": 0.3106
+    },
+    {
+      "model": "nousresearch/hermes-3-llama-3.1-405b",
+      "true_family": "llama",
+      "predicted_family": "qwen",
+      "nn_distance": 0.3286
+    },
+    {
+      "model": "nousresearch/hermes-3-llama-3.1-70b",
+      "true_family": "llama",
+      "predicted_family": "nemotron",
+      "nn_distance": 0.3661
+    },
+    {
+      "model": "nousresearch/hermes-4-405b",
+      "true_family": "other",
+      "predicted_family": "llama",
+      "nn_distance": 0.3647
+    },
+    {
+      "model": "nousresearch/hermes-4-70b",
+      "true_family": "other",
+      "predicted_family": "qwen",
+      "nn_distance": 0.3917
+    },
+    {
+      "model": "nvidia/llama-3.3-nemotron-super-49b-v1.5",
+      "true_family": "llama",
+      "predicted_family": "qwen",
+      "nn_distance": 0.3027
+    },
+    {
+      "model": "nvidia/nemotron-3-super-120b-a12b",
+      "true_family": "nemotron",
+      "predicted_family": "qwen",
+      "nn_distance": 0.3344
+    },
+    {
+      "model": "nvidia/nemotron-3-ultra-550b-a55b",
+      "true_family": "nemotron",
+      "predicted_family": "qwen",
+      "nn_distance": 0.2689
+    },
+    {
+      "model": "openai/gpt-3.5-turbo-instruct",
+      "true_family": "gpt",
+      "predicted_family": "claude",
+      "nn_distance": 0.4451
+    },
+    {
+      "model": "openai/gpt-4-turbo",
+      "true_family": "gpt",
+      "predicted_family": "claude",
+      "nn_distance": 0.3121
+    },
+    {
+      "model": "perceptron/perceptron-mk1",
+      "true_family": "other",
+      "predicted_family": "qwen",
+      "nn_distance": 0.3685
+    },
+    {
+      "model": "qwen/qwen-plus",
+      "true_family": "qwen",
+      "predicted_family": "deepseek",
+      "nn_distance": 0.3008
+    },
+    {
+      "model": "qwen/qwen3-235b-a22b",
+      "true_family": "qwen",
+      "predicted_family": "gemini",
+      "nn_distance": 0.2236
+    },
+    {
+      "model": "qwen/qwen3-235b-a22b-2507",
+      "true_family": "qwen",
+      "predicted_family": "gemini",
+      "nn_distance": 0.1412
+    },
+    {
+      "model": "qwen/qwen3-30b-a3b-instruct-2507",
+      "true_family": "qwen",
+      "predicted_family": "gemini",
+      "nn_distance": 0.22
+    },
+    {
+      "model": "qwen/qwen3-next-80b-a3b-instruct",
+      "true_family": "qwen",
+      "predicted_family": "gemini",
+      "nn_distance": 0.3271
+    },
+    {
+      "model": "qwen/qwen3-vl-235b-a22b-instruct",
+      "true_family": "qwen",
+      "predicted_family": "gemini",
+      "nn_distance": 0.3568
+    },
+    {
+      "model": "qwen/qwen3-vl-30b-a3b-instruct",
+      "true_family": "qwen",
+      "predicted_family": "deepseek",
+      "nn_distance": 0.2654
+    },
+    {
+      "model": "qwen/qwen3-vl-32b-instruct",
+      "true_family": "qwen",
+      "predicted_family": "other",
+      "nn_distance": 0.358
+    },
+    {
+      "model": "rekaai/reka-edge",
+      "true_family": "other",
+      "predicted_family": "claude",
+      "nn_distance": 0.6273
+    },
+    {
+      "model": "tencent/hunyuan-a13b-instruct",
+      "true_family": "hunyuan",
+      "predicted_family": "qwen",
+      "nn_distance": 0.318
+    },
+    {
+      "model": "tencent/hy3",
+      "true_family": "hunyuan",
+      "predicted_family": "kimi",
+      "nn_distance": 0.4087
+    },
+    {
+      "model": "upstage/solar-pro-3",
+      "true_family": "other",
+      "predicted_family": "mistral",
+      "nn_distance": 0.4565
+    },
+    {
+      "model": "writer/palmyra-x5",
+      "true_family": "gemini",
+      "predicted_family": "qwen",
+      "nn_distance": 0.1412
+    },
+    {
+      "model": "x-ai/grok-4.20",
+      "true_family": "grok",
+      "predicted_family": "qwen",
+      "nn_distance": 0.2708
+    },
+    {
+      "model": "x-ai/grok-4.3",
+      "true_family": "grok",
+      "predicted_family": "qwen",
+      "nn_distance": 0.241
+    },
+    {
+      "model": "xiaomi/mimo-v2.5-pro",
+      "true_family": "other",
+      "predicted_family": "qwen",
+      "nn_distance": 0.248
+    },
+    {
+      "model": "z-ai/glm-4.5-air",
+      "true_family": "glm",
+      "predicted_family": "gpt",
+      "nn_distance": 0.2397
+    },
+    {
+      "model": "z-ai/glm-4.7-flash",
+      "true_family": "glm",
+      "predicted_family": "grok",
+      "nn_distance": 0.3863
+    }
+  ],
+  "generated_utc": "2026-07-08T18:16:45Z"
+}

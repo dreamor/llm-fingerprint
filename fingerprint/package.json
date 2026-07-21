@@ -1,0 +1,14 @@
+{
+  "name": "llm-fingerprint",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Identify LLMs by behavioral fingerprint — powered by the PAMELA research dataset",
+  "bin": {
+    "fp": "./bin/fp.js"
+  },
+  "scripts": {
+    "bootstrap": "node scripts/bootstrap.js"
+  },
+  "dependencies": {}
+}

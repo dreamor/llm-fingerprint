@@ -1,0 +1,53 @@
+{
+  "run_id": "pilot-01",
+  "type": "pilot",
+  "created_utc": "2026-07-04T17:59:27.639Z",
+  "prompts_version": "1.0.0",
+  "prompts_sha256": "32f4fc3ab5077438f362bb4d0c06d1ebbe2bb5d2e0809474045dcd60a6b592c1",
+  "run_config_sha256": "fc1e3a4417b7b7f6e2eeb8a0d27bb366df5c0b2f938368b8676b4aed50dcb6d0",
+  "git_commit": "bd685723d4a00fb6c8b5b8626edf9d6819682265",
+  "models": [
+    "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "nvidia/nemotron-nano-9b-v2:free",
+    "openai/gpt-oss-120b:free",
+    "openai/gpt-oss-20b:free",
+    "deepseek/deepseek-v4-pro",
+    "deepseek/deepseek-v4-flash",
+    "meta-llama/llama-3.3-70b-instruct:free",
+    "google/gemma-4-31b-it:free"
+  ],
+  "languages": [
+    "en",
+    "ru",
+    "zh",
+    "ar"
+  ],
+  "tasks": [
+    "num100-random",
+    "num10-random",
+    "num-favorite",
+    "letter-random",
+    "word-random",
+    "color-random",
+    "color-favorite",
+    "animal-random",
+    "city-random",
+    "coin-flip",
+    "coord-num10",
+    "coord-color",
+    "coord-city",
+    "anticoord-num10",
+    "secret-password"
+  ],
+  "temperature_plan": [
+    {
+      "t": 1,
+      "reps": 20
+    },
+    {
+      "t": 0,
+      "reps": 3
+    }
+  ],
+  "notes": "ABANDONED 2026-07-04 ~21:00 UTC after 1510/11040 responses: 6 of 8 pilot models were :free endpoints and the run hit OpenRouter account-level free-models-per-day cap (1000 req/day, X-RateLimit-Limit header), making completion infeasible (~8 days). Superseded by pilot-02 with paid twins of the same checkpoints (+ nemotron-3-nano-30b-a3b replacing nemotron-nano-9b-v2 which has no paid twin). Data kept for reference, excluded from analysis."
+}

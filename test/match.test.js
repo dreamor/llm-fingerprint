@@ -21,13 +21,13 @@ describe('match()', () => {
     const probeResult = {
       model: 'unknown',
       temperature: 1,
-      cells: cells.slice(0, 10).map(c => ({
+      cells: cells.slice(0, 10).map((c) => ({
         task_id: c.task_id,
         lang: c.lang,
         temperature: 1,
         n_valid: c.n_valid || 30,
-        dist: c.dist,
-      })),
+        dist: c.dist
+      }))
     };
 
     const result = match(db, probeResult, { topK: 3, minSharedCells: 2 });
@@ -48,13 +48,13 @@ describe('match()', () => {
     const probeResult = {
       model: 'test',
       temperature: 1,
-      cells: cells.slice(0, 15).map(c => ({
+      cells: cells.slice(0, 15).map((c) => ({
         task_id: c.task_id,
         lang: c.lang,
         temperature: 1,
         n_valid: c.n_valid || 30,
-        dist: { ...c.dist },
-      })),
+        dist: { ...c.dist }
+      }))
     };
 
     const result = match(db, probeResult, { topK: 5, minSharedCells: 3 });
@@ -67,7 +67,7 @@ describe('match()', () => {
     const probeResult = {
       model: 'empty',
       temperature: 1,
-      cells: [],
+      cells: []
     };
     const result = match(db, probeResult, { topK: 5, minSharedCells: 3 });
     assert.equal(result.candidates.length, 0);
@@ -83,13 +83,13 @@ describe('match()', () => {
     const probeResult = {
       model: 'test',
       temperature: 1,
-      cells: cells.slice(0, 10).map(c => ({
+      cells: cells.slice(0, 10).map((c) => ({
         task_id: c.task_id,
         lang: c.lang,
         temperature: 1,
         n_valid: c.n_valid || 30,
-        dist: { ...c.dist },
-      })),
+        dist: { ...c.dist }
+      }))
     };
 
     const result = match(db, probeResult, { topK: 3, minSharedCells: 2 });

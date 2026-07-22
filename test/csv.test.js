@@ -8,7 +8,7 @@ describe('parseCSV()', () => {
     assert.deepEqual(rows, [
       ['task_id', 'lang', 'answer'],
       ['coin-flip', 'en', 'heads'],
-      ['coin-flip', 'en', 'tails'],
+      ['coin-flip', 'en', 'tails']
     ]);
   });
 
@@ -16,23 +16,33 @@ describe('parseCSV()', () => {
     const rows = parseCSV('a,b,c\n"1,2",x,"y,z"');
     assert.deepEqual(rows, [
       ['a', 'b', 'c'],
-      ['1,2', 'x', 'y,z'],
+      ['1,2', 'x', 'y,z']
     ]);
   });
 
   it('handles doubled quotes as escape', () => {
     const rows = parseCSV('a,b\n"she said ""hi""",world');
-    assert.deepEqual(rows, [['a', 'b'], ['she said "hi"', 'world']]);
+    assert.deepEqual(rows, [
+      ['a', 'b'],
+      ['she said "hi"', 'world']
+    ]);
   });
 
   it('handles CRLF line endings', () => {
     const rows = parseCSV('a,b\r\n1,2\r\n3,4');
-    assert.deepEqual(rows, [['a', 'b'], ['1', '2'], ['3', '4']]);
+    assert.deepEqual(rows, [
+      ['a', 'b'],
+      ['1', '2'],
+      ['3', '4']
+    ]);
   });
 
   it('handles newlines inside quoted fields', () => {
     const rows = parseCSV('a,b\n"line1\nline2",x');
-    assert.deepEqual(rows, [['a', 'b'], ['line1\nline2', 'x']]);
+    assert.deepEqual(rows, [
+      ['a', 'b'],
+      ['line1\nline2', 'x']
+    ]);
   });
 
   it('preserves Unicode content (CJK, Arabic)', () => {
@@ -43,6 +53,9 @@ describe('parseCSV()', () => {
 
   it('drops a lone trailing newline', () => {
     const rows = parseCSV('a,b\n1,2\n');
-    assert.deepEqual(rows, [['a', 'b'], ['1', '2']]);
+    assert.deepEqual(rows, [
+      ['a', 'b'],
+      ['1', '2']
+    ]);
   });
 });

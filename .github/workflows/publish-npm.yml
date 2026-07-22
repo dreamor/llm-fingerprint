@@ -9,15 +9,18 @@ concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
 
-permissions:
-  id-token: write
-  contents: read
-
 jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
   publish-npm:
+    needs: [ci]
     name: Publish to npm
     runs-on: ubuntu-latest
     environment: release
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - uses: actions/checkout@v5
@@ -43,15 +46,6 @@ jobs:
             exit 1
           fi
           echo "✅ 版本一致"
-
-      - name: Bootstrap reference library
-        run: node bin/fp.js bootstrap results/distributions.json
-
-      - name: Run tests
-        run: node --test test/*.test.js
-
-      - name: Functional check — self-test match
-        run: node scripts/self-test.mjs
 
       - name: Verify package contents
         run: |

@@ -5,12 +5,27 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-  workflow_call:  # allows release.yml to call this as a reusable workflow
+  workflow_call: # allows release.yml to call this as a reusable workflow
 
 permissions:
   contents: read
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      - run: npm run format:check
+
   test:
     runs-on: ubuntu-latest
     strategy:

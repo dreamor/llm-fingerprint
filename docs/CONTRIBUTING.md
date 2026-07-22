@@ -19,15 +19,15 @@ Zero npm dependencies — uses Node.js built-in `fetch`.
 
 ## Available scripts
 
-| Command (global) | Command (local) | Description |
-|------------------|-----------------|-------------|
-| `fp bootstrap <path>` | `node bin/fp.js bootstrap <path>` | Initialize reference library from `distributions.json` |
-| `fp probe <url> <key> <model>` | `node bin/fp.js probe ...` | Probe an unknown model API |
-| `fp verify <url> <key> <model>` | `node bin/fp.js verify ...` | Verify a claimed model identity |
-| `fp fingerprint <csv>` | `node bin/fp.js fingerprint <csv>` | Match from manually collected answers |
-| `fp match <result.json>` | `node bin/fp.js match <result.json>` | Match an existing probe result |
-| `fp list [--family]` | `node bin/fp.js list [--family]` | Browse reference library |
-| `fp import <jsonl> --model` | `node bin/fp.js import <jsonl> --model` | Ingest new fingerprints |
+| Command (global)                | Command (local)                         | Description                                            |
+| ------------------------------- | --------------------------------------- | ------------------------------------------------------ |
+| `fp bootstrap <path>`           | `node bin/fp.js bootstrap <path>`       | Initialize reference library from `distributions.json` |
+| `fp probe <url> <key> <model>`  | `node bin/fp.js probe ...`              | Probe an unknown model API                             |
+| `fp verify <url> <key> <model>` | `node bin/fp.js verify ...`             | Verify a claimed model identity                        |
+| `fp fingerprint <csv>`          | `node bin/fp.js fingerprint <csv>`      | Match from manually collected answers                  |
+| `fp match <result.json>`        | `node bin/fp.js match <result.json>`    | Match an existing probe result                         |
+| `fp list [--family]`            | `node bin/fp.js list [--family]`        | Browse reference library                               |
+| `fp import <jsonl> --model`     | `node bin/fp.js import <jsonl> --model` | Ingest new fingerprints                                |
 
 ## Project structure
 
@@ -64,13 +64,13 @@ Tests use Node.js built-in `node:test` and `node:assert` — no test framework t
 
 ### Test coverage
 
-| File | What it tests | Tests |
-|------|---------------|-------|
-| `test/jsd.test.js` | JSD correctness, symmetry, edge cases | 7 |
-| `test/tasks.test.js` | Task definitions, languages, normalize() | 14 |
-| `test/db.test.js` | DB load, CRUD, families, entries | 10 |
-| `test/match.test.js` | Self-identification, empty probe, families | 5 |
-| `test/probe.test.js` | resolveReps budget curve, fallback | 5 |
+| File                 | What it tests                              | Tests |
+| -------------------- | ------------------------------------------ | ----- |
+| `test/jsd.test.js`   | JSD correctness, symmetry, edge cases      | 7     |
+| `test/tasks.test.js` | Task definitions, languages, normalize()   | 14    |
+| `test/db.test.js`    | DB load, CRUD, families, entries           | 10    |
+| `test/match.test.js` | Self-identification, empty probe, families | 5     |
+| `test/probe.test.js` | resolveReps budget curve, fallback         | 5     |
 
 ### CI pipeline
 

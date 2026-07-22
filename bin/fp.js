@@ -51,7 +51,7 @@ const COMMANDS = {
   list: () => import('../lib/commands/list.js'),
   import: () => import('../lib/commands/import.js'),
   remove: () => import('../lib/commands/remove.js'),
-  bootstrap: () => import('../lib/commands/bootstrap.js'),
+  bootstrap: () => import('../lib/commands/bootstrap.js')
 };
 
 /** Commands that DON'T need the reference DB loaded first. */
@@ -85,7 +85,10 @@ async function main() {
       if (existsSync(bundled)) {
         warn('reference library empty — auto-bootstrapping from bundled distributions.json…');
         try {
-          const { modelCount, cellCount, outPath } = bootstrapReference(bundled, userReferencePath());
+          const { modelCount, cellCount, outPath } = bootstrapReference(
+            bundled,
+            userReferencePath()
+          );
           warn(`bootstrapped ${modelCount} models (${cellCount} cells) → ${outPath}`);
           db = new FingerprintDB();
           db.load();
@@ -106,4 +109,7 @@ async function main() {
   await mod.run({ db, flags, positional });
 }
 
-main().catch(err => { warn(err.message || String(err)); process.exit(1); });
+main().catch((err) => {
+  warn(err.message || String(err));
+  process.exit(1);
+});

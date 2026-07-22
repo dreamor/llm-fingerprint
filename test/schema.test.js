@@ -4,8 +4,11 @@ import { validateDistribution, validateDistributions } from '../lib/schema.js';
 
 describe('validateDistribution()', () => {
   const good = {
-    model: 'openai/gpt-4o', task_id: 'coin-flip', lang: 'en', temperature: 1,
-    dist: { heads: 0.5, tails: 0.5 },
+    model: 'openai/gpt-4o',
+    task_id: 'coin-flip',
+    lang: 'en',
+    temperature: 1,
+    dist: { heads: 0.5, tails: 0.5 }
   };
 
   it('accepts a valid record', () => {
@@ -16,10 +19,10 @@ describe('validateDistribution()', () => {
   it('rejects missing required fields', () => {
     const r = validateDistribution({ model: 'x/y' });
     assert.ok(!r.ok);
-    assert.ok(r.errors.some(e => e.includes('task_id')));
-    assert.ok(r.errors.some(e => e.includes('lang')));
-    assert.ok(r.errors.some(e => e.includes('temperature')));
-    assert.ok(r.errors.some(e => e.includes('dist')));
+    assert.ok(r.errors.some((e) => e.includes('task_id')));
+    assert.ok(r.errors.some((e) => e.includes('lang')));
+    assert.ok(r.errors.some((e) => e.includes('temperature')));
+    assert.ok(r.errors.some((e) => e.includes('dist')));
   });
 
   it('rejects non-numeric probabilities', () => {
@@ -35,7 +38,7 @@ describe('validateDistribution()', () => {
   it('rejects distributions that do not sum to ~1', () => {
     const r = validateDistribution({ ...good, dist: { heads: 0.3, tails: 0.3 } });
     assert.ok(!r.ok);
-    assert.ok(r.errors.some(e => e.includes('sum to ~1')));
+    assert.ok(r.errors.some((e) => e.includes('sum to ~1')));
   });
 
   it('tolerates 1% rounding slack', () => {
@@ -52,7 +55,7 @@ describe('validateDistributions() batch', () => {
   it('splits valid vs invalid with indices', () => {
     const records = [
       { model: 'a/x', task_id: 't', lang: 'en', temperature: 1, dist: { y: 1 } },
-      { model: 'b/y', /* missing task_id */ lang: 'en', temperature: 1, dist: { y: 1 } },
+      { model: 'b/y', /* missing task_id */ lang: 'en', temperature: 1, dist: { y: 1 } }
     ];
     const { valid, invalid } = validateDistributions(records);
     assert.equal(valid.length, 1);

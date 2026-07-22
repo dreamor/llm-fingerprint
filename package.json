@@ -53,7 +53,11 @@
   "scripts": {
     "bootstrap": "node bin/fp.js bootstrap results/distributions.json",
     "postinstall": "node bin/fp.js bootstrap results/distributions.json 2>&1 || echo '[llm-fingerprint] postinstall bootstrap skipped — will auto-bootstrap on first fp command'",
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "engines": {
     "node": ">=18"
@@ -61,5 +65,10 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {}
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.7.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.9.6"
+  }
 }

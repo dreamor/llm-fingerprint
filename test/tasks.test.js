@@ -24,7 +24,7 @@ describe('TASKS', () => {
   });
 
   it('tasks include expected standard tasks', () => {
-    const ids = TASKS.map(t => t.task_id);
+    const ids = TASKS.map((t) => t.task_id);
     assert.ok(ids.includes('num10-random'));
     assert.ok(ids.includes('coin-flip'));
     assert.ok(ids.includes('color-favorite'));

@@ -34,31 +34,31 @@ fp list --family claude
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `probe <endpoint> [key\|-] <model>` | Probe via OpenAI or Anthropic API and match |
-| `verify <endpoint> [key\|-] <claimed-model>` | Probe + compliance audit against claimed identity |
-| `fingerprint <answers.csv> [--save]` | Build distribution from manually collected answers and match (optionally save to reference lib) |
-| `match <result.json>` | Match an existing probe result |
-| `list [--family <name>]` | Browse reference library (176 models) |
-| `import <responses.jsonl> --model <name>` | Ingest new fingerprint data (records overwrite existing cells) |
-| `remove <model-slug>` | Remove a model from the user's reference library |
-| `bootstrap [distributions.json]` | Initialize reference library (defaults to bundled data) |
+| Command                                      | Description                                                                                     |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `probe <endpoint> [key\|-] <model>`          | Probe via OpenAI or Anthropic API and match                                                     |
+| `verify <endpoint> [key\|-] <claimed-model>` | Probe + compliance audit against claimed identity                                               |
+| `fingerprint <answers.csv> [--save]`         | Build distribution from manually collected answers and match (optionally save to reference lib) |
+| `match <result.json>`                        | Match an existing probe result                                                                  |
+| `list [--family <name>]`                     | Browse reference library (176 models)                                                           |
+| `import <responses.jsonl> --model <name>`    | Ingest new fingerprint data (records overwrite existing cells)                                  |
+| `remove <model-slug>`                        | Remove a model from the user's reference library                                                |
+| `bootstrap [distributions.json]`             | Initialize reference library (defaults to bundled data)                                         |
 
 ### Global flags
 
-| Flag | Values | Default | Description |
-|------|--------|---------|-------------|
-| `--api` | `openai`, `anthropic` | `openai` | API format to use |
-| `--reps` | number or `auto` | `30` | Repetitions per cell |
-| `--eer` | 0–1 | `0.10` | Target EER when `--reps auto` |
-| `--langs` | comma-sep | `en,ru,zh,ar` | Languages to probe |
-| `--concurrency` | number | `4` | HTTP concurrency for probes (with 429/5xx retry + backoff) |
-| `--adaptive` | flag | off | Early-stop when top-1 match stabilizes across rounds |
-| `--openrouter` | flag | off | Send OpenRouter-only fields (e.g. `reasoning: { enabled: false }`) |
-| `--top` | number | `5` | Top-K matches to return |
-| `--api-key-env` | env var name | — | Read the API key from this environment variable |
-| `--api-key-file` | path | — | Read the API key from the first non-empty line of this file |
+| Flag             | Values                | Default       | Description                                                        |
+| ---------------- | --------------------- | ------------- | ------------------------------------------------------------------ |
+| `--api`          | `openai`, `anthropic` | `openai`      | API format to use                                                  |
+| `--reps`         | number or `auto`      | `30`          | Repetitions per cell                                               |
+| `--eer`          | 0–1                   | `0.10`        | Target EER when `--reps auto`                                      |
+| `--langs`        | comma-sep             | `en,ru,zh,ar` | Languages to probe                                                 |
+| `--concurrency`  | number                | `4`           | HTTP concurrency for probes (with 429/5xx retry + backoff)         |
+| `--adaptive`     | flag                  | off           | Early-stop when top-1 match stabilizes across rounds               |
+| `--openrouter`   | flag                  | off           | Send OpenRouter-only fields (e.g. `reasoning: { enabled: false }`) |
+| `--top`          | number                | `5`           | Top-K matches to return                                            |
+| `--api-key-env`  | env var name          | —             | Read the API key from this environment variable                    |
+| `--api-key-file` | path                  | —             | Read the API key from the first non-empty line of this file        |
 
 Passing the API key positionally still works, but the key becomes visible in
 `ps` output and shell history — prefer `--api-key-env` / `--api-key-file`, or
@@ -68,11 +68,11 @@ set `LLM_FINGERPRINT_KEY` / `OPENAI_API_KEY` / `ANTHROPIC_API_KEY`.
 
 Writes always land in a per-user data directory:
 
-| Platform | Path |
-|----------|------|
-| macOS | `~/Library/Application Support/llm-fingerprint/reference.json` |
-| Linux | `$XDG_DATA_HOME/llm-fingerprint/reference.json` (or `~/.local/share/…`) |
-| Windows | `%LOCALAPPDATA%\llm-fingerprint\reference.json` |
+| Platform | Path                                                                    |
+| -------- | ----------------------------------------------------------------------- |
+| macOS    | `~/Library/Application Support/llm-fingerprint/reference.json`          |
+| Linux    | `$XDG_DATA_HOME/llm-fingerprint/reference.json` (or `~/.local/share/…`) |
+| Windows  | `%LOCALAPPDATA%\llm-fingerprint\reference.json`                         |
 
 Override with `LLM_FINGERPRINT_HOME=/some/dir`. Reads fall back to the bundled
 package copy when the user file doesn't exist yet.
@@ -92,7 +92,7 @@ const result = await probe({
   apiKey: process.env.OPENAI_API_KEY,
   model: 'gpt-4o',
   reps: 16,
-  concurrency: 8,
+  concurrency: 8
 });
 
 console.log(match(db, result).verdict);
@@ -111,24 +111,24 @@ Subpath imports for narrower consumers: `llm-fingerprint/probe`,
 
 ### Accuracy (budget curve)
 
-| Queries per model | Equal Error Rate | When to use |
-|-------------------|------------------|-------------|
-| 8 | 10.6% | Quick check — 90% accuracy |
-| 16 | 9.5% | Standard probe |
-| 24 | 8.9% | Higher confidence |
-| 40 | 7.3% | Research-grade (full protocol) |
+| Queries per model | Equal Error Rate | When to use                    |
+| ----------------- | ---------------- | ------------------------------ |
+| 8                 | 10.6%            | Quick check — 90% accuracy     |
+| 16                | 9.5%             | Standard probe                 |
+| 24                | 8.9%             | Higher confidence              |
+| 40                | 7.3%             | Research-grade (full protocol) |
 
 API probing is cheap — ~$0.01 at GPT-4o-mini pricing for a full 15-task × 4-language × 16-rep run.
 
 ### Confidence thresholds
 
-| JSD | Verdict |
-|-----|---------|
-| < 0.05 | Very high confidence — exact match |
+| JSD    | Verdict                                      |
+| ------ | -------------------------------------------- |
+| < 0.05 | Very high confidence — exact match           |
 | < 0.10 | High confidence — same or very close variant |
-| < 0.20 | Moderate confidence — same family |
-| < 0.30 | Low confidence — loose resemblance |
-| ≥ 0.30 | Unknown — not in reference library |
+| < 0.20 | Moderate confidence — same family            |
+| < 0.30 | Low confidence — loose resemblance           |
+| ≥ 0.30 | Unknown — not in reference library           |
 
 ### Budget-curve auto-reps
 
@@ -140,13 +140,13 @@ fp probe https://api.openai.com/v1 sk-xxx gpt-4o --reps auto --eer 0.09
 
 ## Use cases
 
-| Scenario | Command |
-|----------|---------|
-| API provider claims GPT-4o, you suspect a cheaper model | `fp verify` |
-| Kubernetes model-router misrouting | `fp verify` |
-| Distillation / model theft detection | `fp fingerprint` |
-| Reverse-engineer a black-box chat service | `fp fingerprint` |
-| Compare model versions before/after update | `fp probe` |
+| Scenario                                                | Command          |
+| ------------------------------------------------------- | ---------------- |
+| API provider claims GPT-4o, you suspect a cheaper model | `fp verify`      |
+| Kubernetes model-router misrouting                      | `fp verify`      |
+| Distillation / model theft detection                    | `fp fingerprint` |
+| Reverse-engineer a black-box chat service               | `fp fingerprint` |
+| Compare model versions before/after update              | `fp probe`       |
 
 ## Requirements
 

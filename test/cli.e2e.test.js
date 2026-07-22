@@ -16,16 +16,32 @@ const BIN = join(dirname(fileURLToPath(import.meta.url)), '..', 'bin', 'fp.js');
 
 /** Minimal in-fixture reference set: two mock models covering enough cells to satisfy match.minSharedCells. */
 const FIXTURE_MODELS = ['acme/foo', 'acme/bar'];
-const FIXTURE_TASKS = ['coin-flip', 'num10-random', 'color-favorite', 'num100-random', 'num-favorite', 'letter-random', 'word-random', 'color-random', 'animal-random', 'city-random'];
+const FIXTURE_TASKS = [
+  'coin-flip',
+  'num10-random',
+  'color-favorite',
+  'num100-random',
+  'num-favorite',
+  'letter-random',
+  'word-random',
+  'color-random',
+  'animal-random',
+  'city-random'
+];
 
 function makeFixtureDistributions() {
   const records = [];
   for (const model of FIXTURE_MODELS) {
     for (const task_id of FIXTURE_TASKS) {
       records.push({
-        model, task_id, lang: 'en', temperature: 1,
-        n_valid: 10, n_off_format: 0, validity_rate: 1,
-        dist: model === 'acme/foo' ? { heads: 0.5, tails: 0.5 } : { heads: 0.9, tails: 0.1 },
+        model,
+        task_id,
+        lang: 'en',
+        temperature: 1,
+        n_valid: 10,
+        n_off_format: 0,
+        validity_rate: 1,
+        dist: model === 'acme/foo' ? { heads: 0.5, tails: 0.5 } : { heads: 0.9, tails: 0.1 }
       });
     }
   }
@@ -35,7 +51,7 @@ function makeFixtureDistributions() {
 function run(env, args) {
   return spawnSync('node', [BIN, ...args], {
     env: { ...process.env, ...env },
-    encoding: 'utf-8',
+    encoding: 'utf-8'
   });
 }
 
@@ -78,11 +94,15 @@ describe('CLI e2e', () => {
 
   it('match reports a top candidate for a matching probe result', () => {
     const probe = {
-      model: 'acme/mystery', temperature: 1,
-      cells: FIXTURE_TASKS.map(task_id => ({
-        task_id, lang: 'en', temperature: 1,
-        n_valid: 10, dist: { heads: 0.5, tails: 0.5 },
-      })),
+      model: 'acme/mystery',
+      temperature: 1,
+      cells: FIXTURE_TASKS.map((task_id) => ({
+        task_id,
+        lang: 'en',
+        temperature: 1,
+        n_valid: 10,
+        dist: { heads: 0.5, tails: 0.5 }
+      }))
     };
     const probePath = join(home, 'probe.json');
     writeFileSync(probePath, JSON.stringify(probe));
@@ -93,7 +113,8 @@ describe('CLI e2e', () => {
   });
 
   it('fingerprint accepts a CSV with quoted / Unicode / commas', () => {
-    const csv = 'task_id,lang,answer\ncoin-flip,en,heads\ncoin-flip,en,"tails"\ncoin-flip,en,heads\ncoin-flip,en,tails\ncoin-flip,en,heads\nnum10-random,en,7\nnum10-random,en,7\n';
+    const csv =
+      'task_id,lang,answer\ncoin-flip,en,heads\ncoin-flip,en,"tails"\ncoin-flip,en,heads\ncoin-flip,en,tails\ncoin-flip,en,heads\nnum10-random,en,7\nnum10-random,en,7\n';
     const csvPath = join(home, 'answers.csv');
     writeFileSync(csvPath, csv);
     const r = run({ LLM_FINGERPRINT_HOME: home }, ['fingerprint', csvPath]);
@@ -103,10 +124,33 @@ describe('CLI e2e', () => {
 
   it('import + remove round-trip', () => {
     const jsonl = [
-      { model: 'acme/added', task_id: 'coin-flip', lang: 'en', temperature: 1, raw: 'heads', finish_reason: 'stop' },
-      { model: 'acme/added', task_id: 'coin-flip', lang: 'en', temperature: 1, raw: 'heads', finish_reason: 'stop' },
-      { model: 'acme/added', task_id: 'coin-flip', lang: 'en', temperature: 1, raw: 'tails', finish_reason: 'stop' },
-    ].map(o => JSON.stringify(o)).join('\n');
+      {
+        model: 'acme/added',
+        task_id: 'coin-flip',
+        lang: 'en',
+        temperature: 1,
+        raw: 'heads',
+        finish_reason: 'stop'
+      },
+      {
+        model: 'acme/added',
+        task_id: 'coin-flip',
+        lang: 'en',
+        temperature: 1,
+        raw: 'heads',
+        finish_reason: 'stop'
+      },
+      {
+        model: 'acme/added',
+        task_id: 'coin-flip',
+        lang: 'en',
+        temperature: 1,
+        raw: 'tails',
+        finish_reason: 'stop'
+      }
+    ]
+      .map((o) => JSON.stringify(o))
+      .join('\n');
     const jsonlPath = join(home, 'add.jsonl');
     writeFileSync(jsonlPath, jsonl);
 
@@ -115,12 +159,18 @@ describe('CLI e2e', () => {
     assert.match(r1.stderr, /imported/);
 
     const stored = JSON.parse(readFileSync(join(home, 'reference.json'), 'utf-8'));
-    assert.ok(stored.distributions.some(r => r.model === 'acme/added'), 'imported model must be present');
+    assert.ok(
+      stored.distributions.some((r) => r.model === 'acme/added'),
+      'imported model must be present'
+    );
 
     const r2 = run({ LLM_FINGERPRINT_HOME: home }, ['remove', 'acme/added']);
     assert.equal(r2.status, 0, r2.stderr);
     const after = JSON.parse(readFileSync(join(home, 'reference.json'), 'utf-8'));
-    assert.ok(!after.distributions.some(r => r.model === 'acme/added'), 'removed model must be gone');
+    assert.ok(
+      !after.distributions.some((r) => r.model === 'acme/added'),
+      'removed model must be gone'
+    );
   });
 
   it('unknown command exits non-zero with usage', () => {

@@ -32,7 +32,15 @@ describe('parseArgs()', () => {
   });
 
   it('mixes positional and flags', () => {
-    const { positional, flags } = parseArgs(['probe', 'https://x', '--reps', '8', 'gpt-4o', '--api', 'openai']);
+    const { positional, flags } = parseArgs([
+      'probe',
+      'https://x',
+      '--reps',
+      '8',
+      'gpt-4o',
+      '--api',
+      'openai'
+    ]);
     assert.deepEqual(positional, ['probe', 'https://x', 'gpt-4o']);
     assert.equal(flags.reps, '8');
     assert.equal(flags.api, 'openai');
@@ -48,7 +56,14 @@ describe('resolveApiKey()', () => {
 
   it('accepts positional key (with a warn)', () => {
     let warned = false;
-    const r = resolveApiKey({ positional: 'sk-abc', flags: {}, apiType: 'openai', warn: () => { warned = true; } });
+    const r = resolveApiKey({
+      positional: 'sk-abc',
+      flags: {},
+      apiType: 'openai',
+      warn: () => {
+        warned = true;
+      }
+    });
     assert.equal(r.key, 'sk-abc');
     assert.equal(r.source, 'positional');
     assert.ok(warned, 'should warn about ps visibility');
@@ -56,21 +71,31 @@ describe('resolveApiKey()', () => {
 
   it('reads from --api-key-env', () => {
     process.env.MY_KEY = 'env-secret';
-    const r = resolveApiKey({ positional: '-', flags: { 'api-key-env': 'MY_KEY' }, apiType: 'openai' });
+    const r = resolveApiKey({
+      positional: '-',
+      flags: { 'api-key-env': 'MY_KEY' },
+      apiType: 'openai'
+    });
     assert.equal(r.key, 'env-secret');
     assert.equal(r.source, 'env:MY_KEY');
   });
 
   it('rejects an empty env var', () => {
     process.env.EMPTY = '';
-    assert.throws(() => resolveApiKey({ positional: '-', flags: { 'api-key-env': 'EMPTY' }, apiType: 'openai' }));
+    assert.throws(() =>
+      resolveApiKey({ positional: '-', flags: { 'api-key-env': 'EMPTY' }, apiType: 'openai' })
+    );
   });
 
   it('reads from --api-key-file (first non-empty line)', () => {
     const tmp = mkdtempSync(join(tmpdir(), 'fp-key-'));
     const path = join(tmp, 'k');
     writeFileSync(path, '\n\nsk-fromfile\n');
-    const r = resolveApiKey({ positional: '-', flags: { 'api-key-file': path }, apiType: 'openai' });
+    const r = resolveApiKey({
+      positional: '-',
+      flags: { 'api-key-file': path },
+      apiType: 'openai'
+    });
     assert.equal(r.key, 'sk-fromfile');
     rmSync(tmp, { recursive: true, force: true });
   });
@@ -100,6 +125,9 @@ describe('resolveApiKey()', () => {
     delete process.env.LLM_FINGERPRINT_KEY;
     delete process.env.OPENAI_API_KEY;
     delete process.env.ANTHROPIC_API_KEY;
-    assert.throws(() => resolveApiKey({ positional: undefined, flags: {}, apiType: 'openai' }), /--api-key-env|--api-key-file/);
+    assert.throws(
+      () => resolveApiKey({ positional: undefined, flags: {}, apiType: 'openai' }),
+      /--api-key-env|--api-key-file/
+    );
   });
 });

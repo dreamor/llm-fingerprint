@@ -12,15 +12,15 @@ describe('tierFor()', () => {
     assert.equal(tierFor(0.099).key, 'high');
   });
   it('assigns moderate for 0.10 ≤ JSD < 0.20', () => {
-    assert.equal(tierFor(0.10).key, 'moderate');
+    assert.equal(tierFor(0.1).key, 'moderate');
     assert.equal(tierFor(0.19).key, 'moderate');
   });
   it('assigns low for 0.20 ≤ JSD < 0.30', () => {
     assert.equal(tierFor(0.25).key, 'low');
   });
   it('assigns unknown for JSD ≥ 0.30', () => {
-    assert.equal(tierFor(0.30).key, 'unknown');
-    assert.equal(tierFor(0.90).key, 'unknown');
+    assert.equal(tierFor(0.3).key, 'unknown');
+    assert.equal(tierFor(0.9).key, 'unknown');
   });
 });
 
@@ -54,7 +54,7 @@ describe('verificationVerdict()', () => {
     assert.match(v.detail, /qwen/);
   });
   it('marks unknown JSD as failed', () => {
-    const v = verificationVerdict(0.40, 'openai/gpt-4o', 'anthropic/claude');
+    const v = verificationVerdict(0.4, 'openai/gpt-4o', 'anthropic/claude');
     assert.equal(v.status, 'failed');
     assert.match(v.detail, /claude/);
   });

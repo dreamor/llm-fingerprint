@@ -50,6 +50,7 @@ describe('FingerprintDB', () => {
 
   it('entries() iterates all models', () => {
     let count = 0;
+    /* eslint-disable-next-line no-unused-vars */
     for (const _ of db.entries()) {
       count++;
     }
@@ -108,40 +109,62 @@ describe('FingerprintDB.save() overwrite semantics', () => {
 
   it('records overwrite existing cells with the same (model, task, lang, temp) key', () => {
     const db = new FingerprintDB(path);
-    const initial = [{
-      model: 'acme/foo', task_id: 'coin-flip', lang: 'en', temperature: 1,
-      n_valid: 10, dist: { heads: 0.7, tails: 0.3 },
-    }];
+    const initial = [
+      {
+        model: 'acme/foo',
+        task_id: 'coin-flip',
+        lang: 'en',
+        temperature: 1,
+        n_valid: 10,
+        dist: { heads: 0.7, tails: 0.3 }
+      }
+    ];
     db.save(initial);
 
     // Re-import with a corrected distribution
-    const updated = [{
-      model: 'acme/foo', task_id: 'coin-flip', lang: 'en', temperature: 1,
-      n_valid: 20, dist: { heads: 0.5, tails: 0.5 },
-    }];
+    const updated = [
+      {
+        model: 'acme/foo',
+        task_id: 'coin-flip',
+        lang: 'en',
+        temperature: 1,
+        n_valid: 20,
+        dist: { heads: 0.5, tails: 0.5 }
+      }
+    ];
     db.save(updated);
 
     const stored = JSON.parse(readFileSync(path, 'utf-8'));
-    const cell = stored.distributions.find(r =>
-      r.model === 'acme/foo' && r.task_id === 'coin-flip' && r.lang === 'en',
+    const cell = stored.distributions.find(
+      (r) => r.model === 'acme/foo' && r.task_id === 'coin-flip' && r.lang === 'en'
     );
     assert.equal(cell.n_valid, 20, 'expected new record to overwrite old');
     assert.deepEqual(cell.dist, { heads: 0.5, tails: 0.5 });
     // no duplicate row
-    const matching = stored.distributions.filter(r =>
-      r.model === 'acme/foo' && r.task_id === 'coin-flip' && r.lang === 'en' && r.temperature === 1,
+    const matching = stored.distributions.filter(
+      (r) =>
+        r.model === 'acme/foo' &&
+        r.task_id === 'coin-flip' &&
+        r.lang === 'en' &&
+        r.temperature === 1
     );
     assert.equal(matching.length, 1);
   });
 
   it('preserves unrelated cells across saves', () => {
     const db = new FingerprintDB(path);
-    db.save([{
-      model: 'acme/bar', task_id: 'coin-flip', lang: 'en', temperature: 1,
-      n_valid: 5, dist: { heads: 1 },
-    }]);
+    db.save([
+      {
+        model: 'acme/bar',
+        task_id: 'coin-flip',
+        lang: 'en',
+        temperature: 1,
+        n_valid: 5,
+        dist: { heads: 1 }
+      }
+    ]);
     const stored = JSON.parse(readFileSync(path, 'utf-8'));
-    const models = new Set(stored.distributions.map(r => r.model));
+    const models = new Set(stored.distributions.map((r) => r.model));
     assert.ok(models.has('acme/foo'), 'earlier model must survive');
     assert.ok(models.has('acme/bar'), 'new model must be added');
   });
@@ -149,16 +172,23 @@ describe('FingerprintDB.save() overwrite semantics', () => {
 
 describe('bootstrapReference()', () => {
   let tmp;
-  before(() => { tmp = mkdtempSync(join(tmpdir(), 'fp-boot-')); });
-  after(() => { rmSync(tmp, { recursive: true, force: true }); });
+  before(() => {
+    tmp = mkdtempSync(join(tmpdir(), 'fp-boot-'));
+  });
+  after(() => {
+    rmSync(tmp, { recursive: true, force: true });
+  });
 
   it('materializes a reference file from the flat-array form', () => {
     const src = join(tmp, 'src-flat.json');
     const out = join(tmp, 'nested', 'reference.json');
-    writeFileSync(src, JSON.stringify([
-      { model: 'a/x', task_id: 't', lang: 'en', temperature: 1, dist: { y: 1 } },
-      { model: 'a/y', task_id: 't', lang: 'en', temperature: 1, dist: { y: 1 } },
-    ]));
+    writeFileSync(
+      src,
+      JSON.stringify([
+        { model: 'a/x', task_id: 't', lang: 'en', temperature: 1, dist: { y: 1 } },
+        { model: 'a/y', task_id: 't', lang: 'en', temperature: 1, dist: { y: 1 } }
+      ])
+    );
     const result = bootstrapReference(src, out);
     assert.equal(result.modelCount, 2);
     assert.equal(result.cellCount, 2);
@@ -172,10 +202,13 @@ describe('bootstrapReference()', () => {
   it('accepts the { distributions: [...] } envelope form', () => {
     const src = join(tmp, 'src-envelope.json');
     const out = join(tmp, 'ref2.json');
-    writeFileSync(src, JSON.stringify({
-      generated_utc: '2026-01-01',
-      distributions: [{ model: 'a/x', task_id: 't', lang: 'en', temperature: 1, dist: { y: 1 } }],
-    }));
+    writeFileSync(
+      src,
+      JSON.stringify({
+        generated_utc: '2026-01-01',
+        distributions: [{ model: 'a/x', task_id: 't', lang: 'en', temperature: 1, dist: { y: 1 } }]
+      })
+    );
     const result = bootstrapReference(src, out);
     assert.equal(result.cellCount, 1);
     assert.equal(result.modelCount, 1);

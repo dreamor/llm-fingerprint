@@ -5,6 +5,10 @@ on:
     tags:
       - 'v*'
 
+concurrency:
+  group: publish-npm-${{ github.ref }}
+  cancel-in-progress: false
+
 permissions:
   id-token: write
   contents: read
@@ -12,6 +16,8 @@ permissions:
 jobs:
   test-and-publish:
     runs-on: ubuntu-latest
+    environment: release
+
     steps:
       - uses: actions/checkout@v5
 
@@ -40,6 +46,17 @@ jobs:
 
       - name: Functional check — self-test match
         run: node scripts/self-test.mjs
+
+      - name: Verify package contents
+        run: |
+          echo "📦 Checking package contents..."
+          FILE_COUNT=$(npm pack --dry-run 2>&1 | grep -c '^npm notice')
+          echo "Package contains $FILE_COUNT entries"
+          if npm pack --dry-run 2>&1 | grep -q '\.test\.js'; then
+            echo "❌ Test files leaked into package!"
+            exit 1
+          fi
+          echo "✅ Package contents look clean"
 
       - name: Publish to npm (OIDC trusted publisher)
         run: npm publish --access public

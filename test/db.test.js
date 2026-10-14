@@ -84,12 +84,13 @@ describe('inferFamily()', () => {
     assert.equal(inferFamily('meta-llama/llama-4-maverick'), 'llama');
   });
 
-  it('maps unknown prefix to other', () => {
-    assert.equal(inferFamily('unknown-org/custom-model'), 'other');
+  it('groups unknown vendors by their provider prefix', () => {
+    assert.equal(inferFamily('unknown-org/custom-model'), 'unknown-org');
+    assert.equal(inferFamily('acme/mystery-model'), 'acme');
   });
 
   it('handles model slugs without provider prefix', () => {
-    // Not realistic for OpenRouter but defensive
+    // No provider segment to group by → defensive "other"
     assert.equal(inferFamily('just-a-model'), 'other');
   });
 });

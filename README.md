@@ -44,6 +44,7 @@ fp list --family claude
 | `import <responses.jsonl> --model <name>`    | Ingest new fingerprint data (records overwrite existing cells)                                  |
 | `remove <model-slug>`                        | Remove a model from the user's reference library                                                |
 | `bootstrap [distributions.json]`             | Initialize reference library (defaults to bundled data)                                         |
+| `version` (or `--version`)                   | Print the CLI version                                                                           |
 
 ### Global flags
 
@@ -60,9 +61,13 @@ fp list --family claude
 | `--api-key-env`  | env var name          | —             | Read the API key from this environment variable                    |
 | `--api-key-file` | path                  | —             | Read the API key from the first non-empty line of this file        |
 
-Passing the API key positionally still works, but the key becomes visible in
-`ps` output and shell history — prefer `--api-key-env` / `--api-key-file`, or
-set `LLM_FINGERPRINT_KEY` / `OPENAI_API_KEY` / `ANTHROPIC_API_KEY`.
+The positional API key is optional: when the key comes from a flag, file, or
+environment variable, omit it entirely (`fp probe <endpoint> --api-key-env K <model>`).
+Passing the key positionally still works — either as the second argument
+(`fp probe <endpoint> <key> <model>`) or with a `-` placeholder
+(`fp probe <endpoint> - <model>`) — but the key becomes visible in `ps` output
+and shell history, so prefer `--api-key-env` / `--api-key-file`, or set
+`LLM_FINGERPRINT_KEY` / `OPENAI_API_KEY` / `ANTHROPIC_API_KEY`.
 
 ### Reference library location
 

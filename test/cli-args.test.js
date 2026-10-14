@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { writeFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { parseArgs, resolveApiKey } from '../lib/cli-args.js';
+import { parseArgs, resolveApiKey, parseEndpointModelArgs } from '../lib/cli-args.js';
 
 describe('parseArgs()', () => {
   it('parses positional args', () => {
@@ -44,6 +44,28 @@ describe('parseArgs()', () => {
     assert.deepEqual(positional, ['probe', 'https://x', 'gpt-4o']);
     assert.equal(flags.reps, '8');
     assert.equal(flags.api, 'openai');
+  });
+});
+
+describe('parseEndpointModelArgs()', () => {
+  it('treats a 2-positional form as <endpoint> <model> (key from flag/env)', () => {
+    const r = parseEndpointModelArgs(['https://x/v1', 'gpt-4o']);
+    assert.equal(r.endpoint, 'https://x/v1');
+    assert.equal(r.model, 'gpt-4o');
+    assert.equal(r.apiKeyPositional, undefined);
+  });
+
+  it('treats a 3-positional form as <endpoint> <api-key> <model>', () => {
+    const r = parseEndpointModelArgs(['https://x/v1', 'sk-abc', 'gpt-4o']);
+    assert.equal(r.endpoint, 'https://x/v1');
+    assert.equal(r.apiKeyPositional, 'sk-abc');
+    assert.equal(r.model, 'gpt-4o');
+  });
+
+  it('preserves the explicit "-" placeholder', () => {
+    const r = parseEndpointModelArgs(['https://x/v1', '-', 'gpt-4o']);
+    assert.equal(r.apiKeyPositional, '-');
+    assert.equal(r.model, 'gpt-4o');
   });
 });
 

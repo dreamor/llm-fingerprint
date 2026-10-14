@@ -29,6 +29,14 @@ const FIXTURE_TASKS = [
   'city-random'
 ];
 
+/** Env that blanks every API-key source so key resolution is deterministic. */
+const NO_KEY_ENV = {
+  FP_UNSET_KEY: '',
+  LLM_FINGERPRINT_KEY: '',
+  OPENAI_API_KEY: '',
+  ANTHROPIC_API_KEY: ''
+};
+
 function makeFixtureDistributions() {
   const records = [];
   for (const model of FIXTURE_MODELS) {
@@ -79,14 +87,63 @@ describe('CLI e2e', () => {
     assert.match(r.stdout, /fp probe/);
   });
 
+  it('--version prints the package version without needing a DB', () => {
+    const r = spawnSync('node', [BIN, '--version'], { encoding: 'utf-8' });
+    assert.equal(r.status, 0, r.stderr);
+    assert.match(r.stdout.trim(), /^\d+\.\d+\.\d+/);
+  });
+
+  it('probe accepts --api-key-env without a positional key placeholder', () => {
+    // Regression: `fp probe <endpoint> --api-key-env X <model>` (the README
+    // example) used to fail with a usage error because the model was pinned to
+    // positional index 2, forcing a `-` placeholder.
+    const r = run(NO_KEY_ENV, [
+      'probe',
+      'http://127.0.0.1:9/v1',
+      '--api-key-env',
+      'FP_UNSET_KEY',
+      'gpt-4o'
+    ]);
+    assert.notEqual(r.status, 0);
+    // Model was parsed → past the usage check, fails resolving the unset key.
+    assert.doesNotMatch(r.stderr, /usage: fp probe/);
+    assert.match(r.stderr, /FP_UNSET_KEY is empty or unset/);
+  });
+
+  it('verify accepts --api-key-env without a positional key placeholder', () => {
+    const r = run(NO_KEY_ENV, [
+      'verify',
+      'http://127.0.0.1:9/v1',
+      '--api-key-env',
+      'FP_UNSET_KEY',
+      'gpt-4o'
+    ]);
+    assert.notEqual(r.status, 0);
+    assert.doesNotMatch(r.stderr, /usage: fp verify/);
+    assert.match(r.stderr, /FP_UNSET_KEY is empty or unset/);
+  });
+
+  it('probe still accepts the explicit "-" key placeholder', () => {
+    const r = run(NO_KEY_ENV, [
+      'probe',
+      'http://127.0.0.1:9/v1',
+      '-',
+      'gpt-4o',
+      '--api-key-env',
+      'FP_UNSET_KEY'
+    ]);
+    assert.doesNotMatch(r.stderr, /usage: fp probe/);
+    assert.match(r.stderr, /FP_UNSET_KEY is empty or unset/);
+  });
+
   it('list shows both fixture families', () => {
     const r = run({ LLM_FINGERPRINT_HOME: home }, ['list']);
     assert.equal(r.status, 0, r.stderr);
     assert.match(r.stdout, /Reference library: 2 models/);
   });
 
-  it('list --family filters by family', () => {
-    const r = run({ LLM_FINGERPRINT_HOME: home }, ['list', '--family', 'other']);
+  it('list --family filters by family using the vendor prefix for unknown vendors', () => {
+    const r = run({ LLM_FINGERPRINT_HOME: home }, ['list', '--family', 'acme']);
     assert.equal(r.status, 0, r.stderr);
     assert.match(r.stdout, /acme\/foo/);
     assert.match(r.stdout, /acme\/bar/);

@@ -8,11 +8,15 @@
  *   3. dispatches to the command module
  */
 
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { FingerprintDB, bootstrapReference } from '../lib/db.js';
 import { parseArgs } from '../lib/cli-args.js';
 import { warn } from '../lib/cli-output.js';
-import { bundledDistributionsPath, userReferencePath } from '../lib/paths.js';
+import { bundledDistributionsPath, userReferencePath, PKG_ROOT } from '../lib/paths.js';
+
+const pkg = JSON.parse(readFileSync(join(PKG_ROOT, 'package.json'), 'utf-8'));
+const VERSION = pkg.version;
 
 const HELP = `
 Usage:
@@ -25,6 +29,7 @@ Usage:
   fp remove <model-slug>
   fp bootstrap [distributions.json]        (default: bundled results/distributions.json)
   fp help
+  fp version                               (aliases: --version, -v)
 
 API key sources (in priority order):
   <positional>           — visible in \`ps\`; discouraged
@@ -60,6 +65,11 @@ const STANDALONE = new Set(['bootstrap', 'help']);
 async function main() {
   const argv = process.argv.slice(2);
   const cmd = argv[0];
+
+  if (cmd === 'version' || cmd === '--version' || cmd === '-v') {
+    console.log(VERSION);
+    return;
+  }
 
   if (!cmd || cmd === 'help' || cmd === '--help' || cmd === '-h') {
     console.log(HELP);

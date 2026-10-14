@@ -82,6 +82,50 @@ Writes always land in a per-user data directory:
 Override with `LLM_FINGERPRINT_HOME=/some/dir`. Reads fall back to the bundled
 package copy when the user file doesn't exist yet.
 
+## Extending the reference library
+
+The bundled library is a **frozen research snapshot** (176 models, 10540 cells) — it
+does not grow on its own. You can extend _your local_ library with three commands:
+
+| Goal                                                  | Command                                                     | Semantics                                                                                            |
+| ----------------------------------------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Ingest raw responses you collected yourself           | `fp import <responses.jsonl> --model <vendor/slug>`         | **merge** — overwrites matching `(model, task_id, lang, temperature)` cells, keeps every other model |
+| Save a distribution built from hand-collected answers | `fp fingerprint <answers.csv> --save --model <vendor/slug>` | **merge**                                                                                            |
+| (Re)build the library from a `distributions.json`     | `fp bootstrap <distributions.json>`                         | ⚠️ **replace** — the library becomes exactly the source file's records                               |
+
+> ⚠️ `fp bootstrap` overwrites the **entire** library; it never merges. To _add_ to the
+> existing 176 models, use `fp import`, or merge the JSON yourself and bootstrap the
+> combined file.
+
+**`fp import` input** — one JSON object per line (`finish_reason` must be `"stop"`;
+`task_id` must match a task in `lib/tasks.js`):
+
+<!-- prettier-ignore -->
+```json
+{"model":"acme/mystery-1","task_id":"num10-random","lang":"en","temperature":1,"raw":"7","finish_reason":"stop"}
+```
+
+**`fp fingerprint` input** — CSV with a header row:
+
+```csv
+task_id,lang,answer
+num10-random,en,7
+coin-flip,en,heads
+```
+
+Additions always land in the per-user library (see the path table above), never in the
+bundled package copy, and are grouped by vendor prefix in `fp list` (e.g.
+`fp list --family acme`). Use `LLM_FINGERPRINT_HOME=/some/dir` to keep an extended
+library isolated.
+
+### Keeping up to date
+
+There is currently **no newer dataset version** than the bundled one (176 models /
+10540 cells; Zenodo [10.5281/zenodo.21278557](https://doi.org/10.5281/zenodo.21278557),
+2026-07-08, CC-BY-4.0). Models released after that must be fingerprinted by you. A model
+needs a handful of shared cells before it can be matched — `match.minSharedCells` is 6
+by default (scaled down for small probes).
+
 ## Programmatic API
 
 The CLI is a thin wrapper over `lib/*` — the same functions ship as an ESM library:

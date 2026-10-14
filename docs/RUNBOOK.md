@@ -123,6 +123,11 @@ fp bootstrap results/distributions.json
 # → bootstrapped 176 models (10540 cells) → data/reference.json
 ```
 
+> ⚠️ `bootstrap` **replaces** the entire library with the source file's records — it does
+> not merge. Anything added earlier (via `fp import` / `fp fingerprint --save`) is
+> dropped. To add models on top of the existing library, use `fp import` below; it merges
+> and preserves unrelated models.
+
 ### Import new data (JSONL format)
 
 ```bash
